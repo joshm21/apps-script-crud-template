@@ -99,7 +99,7 @@ const Controller = (() => {
 
   ns.json = (ctx) => {
     const resources = Model.read(ctx.type)
-    return ContentService.createTextOutput(JSON.stringify(resources)).setMimeType(ContentService.MimeType.JSON)
+    return renderJson(resources)
   }
 
   ns.create = (ctx) => {
@@ -123,6 +123,21 @@ const Controller = (() => {
     return renderTemplate("v/redirect", ctx)
   }
 
+  ns.batchCreate = (ctx) => {
+    const resources = Model.create(ctx.type, JSON.parse(ctx.postData.contents).resources)
+    return renderJson(resources)
+  }
+
+  ns.batchUpdate = (ctx) => {
+    const resources = Model.update(ctx.type, JSON.parse(ctx.postData.contents).resources)
+    return renderJson(resources)
+  }
+
+  ns.batchDelete = (ctx) => {
+    Model.delete(ctx.type, JSON.parse(ctx.postData.contents).ids)
+    return renderJson(ids)
+  }
+
 
   const renderTemplate = (page, ctx) => {
     console.log(`Rendering ${page}. ctx = ${JSON.stringify(ctx)}`)
@@ -131,6 +146,10 @@ const Controller = (() => {
     const innerHtml = template.evaluate().getContent()
     const outerHtml = HtmlService.createTemplateFromFile("v/base").evaluate().getContent()
     return HtmlService.createHtmlOutput(outerHtml.replace("!!INNERHTML!!", innerHtml))
+  }
+
+  const renderJson = (jsObj) => {
+    return ContentService.createTextOutput(JSON.stringify(jsObj)).setMimeType(ContentService.MimeType.JSON)
   }
 
   return ns
