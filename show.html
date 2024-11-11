@@ -1,0 +1,33 @@
+<div class="d-flex justify-content-between align-items-center my-4">
+  <h2 class="text-capitalize">
+    <?=ctx.type?> Details
+  </h2>
+  <div>
+    <a href="<?=ctx.editLink?>" target="_top" class="btn btn-primary">Edit</a>
+    <form action="<?=ctx.deleteLink?>" method="post" class="d-inline" onsubmit="return confirmDelete()">
+      <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+  </div>
+</div>
+
+<div>
+  <? for (let field in ctx.resource) { ?>
+  <div class="row">
+    <div class="col-3 fw-bold text-end">
+      <?=field?>:
+    </div>
+    <div class="col">
+      <? if (Config.modelDefs[ctx.type].fields[field].type == Config.fieldTypes.date) {
+          ctx.resource[field] = ctx.resource[field].toISOString().slice(0,10)
+        } ?>
+      <?=ctx.resource[field]?>
+    </div>
+  </div>
+  <? } ?>
+</div>
+
+<script>
+  function confirmDelete() {
+    return confirm("Are you sure you want to delete this item?")
+  }
+</script>
