@@ -1,5 +1,5 @@
 # apps-script-crud-template
-A starter project for turning any spreadsheet into a crud app
+Turn any sheet into a web crud app in 5 minutes.
 
 # features
 * 5 minute setup (see below)
