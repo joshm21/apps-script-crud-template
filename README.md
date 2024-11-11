@@ -14,7 +14,7 @@ A starter project for turning any spreadsheet into a crud app
 2. add headers in row 1
 3. (optional) add data to sheet
 4. start apps script project (from sheet > extensions > apps script)
-5. copy server.gs, list.html, show.html, form.html, and redirect.html to your script project
+5. copy server.gs and html files to your script project (prefix html files with "v/" eg v/base)
 6. define your model definitions (see example at top of server.gs)
 7. deploy the script as a web app
 
