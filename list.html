@@ -1,0 +1,31 @@
+<div class="d-flex justify-content-between align-items-center my-4">
+  <h2 class="text-capitalize">
+    <?=ctx.type?> List
+  </h2>
+  <a href="<?=ctx.addLink?>" target="_top" class="btn btn-primary">New</a>
+</div>
+
+<input type="text" id="filterInput" class="form-control my-4" placeholder="Type to filter items...">
+
+<ul class="list-group my-4">
+  <? for (let res of ctx.resources) { ?>
+  <li class="list-group-item"><a href="<?=res.showLink?>" target="_top">
+      <?=Config.modelDefs[ctx.type].displayText(res)?>
+    </a></li>
+  <? } ?>
+</ul>
+
+<script>
+  document.getElementById('filterInput').addEventListener('input', function() {
+    const filterText = this.value.toLowerCase();
+    const items = document.querySelectorAll('.list-group-item');
+    items.forEach(item => {
+      const text = item.textContent.toLowerCase();
+      if (text.includes(filterText)) {
+        item.classList.remove('d-none');
+      } else {
+        item.classList.add('d-none');
+      }
+    });
+  });
+</script>
