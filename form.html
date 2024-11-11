@@ -1,0 +1,102 @@
+<h2 class="my-4 text-capitalize">
+  <?=ctx.action?>
+  <?=ctx.type?>
+</h2>
+<form action="<?=ctx.formLink?>" method="post">
+
+  <? for (let field in ctx.resource) { ?>
+  <? const fieldValue = ctx.resource[field] ?>
+  <? const fieldDef = Config.modelDefs[ctx.type].fields[field] ?>
+  <? const fieldType = fieldDef.type ?>
+
+  <!-- if text, number, or date -->
+  <? if (fieldType == Config.fieldTypes.text || 
+      fieldType == Config.fieldTypes.number || 
+      fieldType == Config.fieldTypes.date) { ?>
+  <div class="row mb-3">
+    <label for="<?=field?>" class="col-3 col-form-label">
+      <?=field?>
+    </label>
+    <div class="col">
+      <input
+        type="<?=fieldType?>"
+        class="form-control"
+        id="<?=field?>"
+        name="<?=field?>"
+        <? if (fieldValue != null && fieldType == Config.fieldTypes.date) {
+          fieldValue = fieldValue.toISOString().slice(0,10)
+        } ?>
+        value="<?=fieldValue?>"
+
+      <? if (fieldDef.readonly == true) { ?>
+      readonly
+      <? } ?>
+      <? if (fieldDef.required == true) { ?>
+      required
+      <? } ?>
+      >
+    </div>
+  </div>
+  <? } ?>
+
+  <!-- if multiline -->
+  <? if (fieldType == Config.fieldTypes.multiline) { ?>
+  <div class="row mb-3">
+    <label for="<?=field?>" class="col-3 col-form-label">
+      <?=field?>
+    </label>
+    <div class="col">
+      <textarea
+        class="form-control"
+        id="<?=field?>"
+        name="<?=field?>"
+        rows="3"
+        <? if (fieldDef.readonly == true) { ?>
+          readonly 
+        <? } ?>
+        <? if (fieldDef.required == true) { ?>
+          required
+        <? } ?>
+      ><?=fieldValue?>
+      </textarea>
+    </div>
+  </div>
+  <? } ?>
+
+  <!-- if select -->
+  <? if (fieldType == Config.fieldTypes.select) { ?>
+  <div class="row mb-3">
+    <label for="<?=field?>" class="col-3 col-form-label">
+      <?=field?>
+    </label>
+    <div class="col">
+      <select
+        class="form-select"
+        id="<?=field?>"
+        name="<?=field?>"
+        value="<?=fieldValue?>"
+        <? if (fieldDef.readonly == true) { ?>
+          readonly 
+        <? } ?>
+        <? if (fieldDef.required == true) { ?>
+          required
+        <? } ?>
+      >
+      <? if (fieldDef.required != true) { ?>
+          <option value=""></option>
+        <? } ?>
+      <? for (let opt of fieldDef.options) { ?>
+
+        <option value="<?=opt?>"><?=opt?></option>
+      <? } ?> 
+      </select>
+    </div>
+  </div>
+  <? } ?>
+
+
+  <? } ?> <!-- end looping through fields -->
+  
+
+  <button type="submit" class="btn btn-primary w-100">Save</button>
+</form>
