@@ -97,6 +97,11 @@ const Controller = (() => {
     return renderTemplate("v/form", ctx)
   }
 
+  ns.json = (ctx) => {
+    const resources = Model.read(ctx.type)
+    return ContentService.createTextOutput(JSON.stringify(resources)).setMimeType(ContentService.MimeType.JSON)
+  }
+
   ns.create = (ctx) => {
     ctx.resource = Model.create(ctx.type, [ctx.parameter])[0]
     ctx.redirectText = "View new resource"
